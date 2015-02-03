@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/zdavatz/spreadsheet.git
+  revision: adc4dcdbad7e2e3023977db30c8eb9b1936aaecc
+  specs:
+    spreadsheet (1.0.1)
+      ruby-ole
+
+GIT
   remote: https://github.com/zishan/leankitkanban.git
   revision: 7054f9897e6eae89358566e3bf6e7575bdf92297
   specs:
@@ -32,6 +39,7 @@ GEM
     pry-debugger (0.2.2)
       debugger (~> 1.3)
       pry (~> 0.9.10)
+    ruby-ole (1.2.11.8)
     slop (3.6.0)
 
 PLATFORMS
@@ -41,3 +49,4 @@ DEPENDENCIES
   leankitkanban!
   nokogiri
   pry-debugger
+  spreadsheet!
