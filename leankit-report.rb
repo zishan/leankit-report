@@ -95,7 +95,8 @@ puts "Writing output to #{fname}"
 
 # SET UP SPREADSHEET
 book = Spreadsheet::Workbook.new
-format = Spreadsheet::Format.new weight: bold
+format = Spreadsheet::Format.new weight: :bold
+
 sheet = book.create_worksheet name: 'Epic Status'
 sheet.row(0).default_format = format
 sheet.row(0).replace(%w(Title Blocked Lane))
