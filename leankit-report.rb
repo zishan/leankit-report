@@ -1,5 +1,6 @@
 require 'date'
 require 'leankitkanban'
+require 'mail'
 require 'nokogiri'
 require 'spreadsheet'
 
@@ -86,9 +87,9 @@ def board_summary(board_id, card_types)
   output
 end
 
-board_id = 1234567890
-epics = board_summary(board_id, ['Epic'])
-defects = board_summary(board_id, ['Defect'])
+epics = board_summary(156_604_375, ['Epic'])
+defects = board_summary(144_730_554, ['Defect'])
+work = board_summary(144_730_554, ['Epic', 'Task', 'User Story'])
 
 fname = "/tmp/leankit-report-#{DateTime.now.strftime('%Y%m%d')}.xls"
 puts "Writing output to #{fname}"
@@ -112,5 +113,24 @@ defects.each_with_index do |row, n|
   sheet.row(n+1).replace(details)
 end
 book.write fname
+
+sheet = book.create_worksheet name: 'Work'
+sheet.row(0).default_format = format
+sheet.row(0).replace(%w(ExternalID Type Priority Lane Assigned Blocked Title URL))
+work.each_with_index do |row, n|
+  details = [row[:external_id], row[:type], row[:priority], row[:lane], row[:assigned], row[:blocked], row[:title], row[:url]]
+  sheet.row(n+1).replace(details)
+end
+book.write fname
+
+mail = Mail.new do
+  from 'zahmad@teladoc.com'
+  to 'zahmad@teladoc.com, sbhat@teladoc.com, suppuluri@teladoc.com, pmarkowitz@teladoc.com, jdittmar@teladoc.com, rkamat@teladoc.com'
+  subject 'Behavioral Health Leankit Status'
+  body 'See attached.'
+  add_file fname
+end
+mail.delivery_method :sendmail
+mail.deliver
 
 puts "Done."
